@@ -1,0 +1,8 @@
+# pycharm
+.idea/
+
+# default virtual environment dir
+.venv
+
+# tmp results dir
+tmp/
