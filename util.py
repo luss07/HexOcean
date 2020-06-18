@@ -34,17 +34,17 @@ def fetch_last_non_blank_frame(video_path, allowed_blank_frame_deviation=40):
         comparator_array = np.full((size_x, size_y, pixel_size), gravity_center)
         return (np.absolute(frame_array - comparator_array) <= allowed_blank_frame_deviation).all()
 
-    result = None
+    result_frame = None
     frames_stream = cv2.VideoCapture(video_path)
 
     ret, frame = frames_stream.read()
     while ret:
         if not is_blank(frame):
-            result = frame
+            result_frame = frame
         ret, frame = frames_stream.read()
     frames_stream.release()
 
-    if result is None:
+    if result_frame is None:
         return None
 
     tmp_dir = Path('tmp')
@@ -53,6 +53,6 @@ def fetch_last_non_blank_frame(video_path, allowed_blank_frame_deviation=40):
 
     video_name, extension = Path(video_path).name.split('.')
     result_path = tmp_dir / f'{video_name}_non_blank_frame.png'
-    cv2.imwrite(str(result_path), result)
+    cv2.imwrite(str(result_path), result_frame)
 
     return result_path
